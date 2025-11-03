@@ -1,6 +1,6 @@
 function batchConvertToEMX(scaleFactor)
 % batchConvertToEMX  Convert all DSC/DTA in "Input Spectra" folder to EMX-style SPC/PAR in "Output Spectra".
-% One input - scaling factor, for example 1000 times magnification: batchConvertToEMX(100)
+% One input - scaling factor, for example 1000 times magnification: batchConvertToEMX(1000)
 % Set the default value for the scaling factor in line 14: scaleFactor = 1000;
 %
 % Folder layout (relative to this .m file):
@@ -60,4 +60,5 @@ function batchConvertToEMX(scaleFactor)
 
     fprintf('------------------------------------------------------\nDone.\n');
 end
+
 
