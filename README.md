@@ -1,4 +1,5 @@
 # EPR-Matlab-Toolkit
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17515095.svg)](https://doi.org/10.5281/zenodo.17515095)
 Matlab scripts for some tasks related to EPR spectra processing and simulation.  
 
 This repository contains Matlab scripts and functions developed for the analysis and visualisation of Electron Paramagnetic Resonance (EPR) data. The scripts were written in the context of studies on proteins and enzymes, but many of the routines are applicable to other EPR data as well.
