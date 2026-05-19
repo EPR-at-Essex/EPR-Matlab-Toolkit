@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+title: EPR-Matlab-Toolkit
+message: "If you use this software, please cite it as below."
+type: software
+
+authors:
+  - family-names: Svistunenko
+    given-names: Dimitri
+
+repository-code: "https://github.com/EPR-at-Essex/EPR-Matlab-Toolkit"
+
+doi: 10.5281/zenodo.17515095
+
+license: MIT
+
+version: 2.0
+
+date-released: 2026-05-19CITATION.cff
