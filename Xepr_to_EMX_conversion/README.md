@@ -6,4 +6,6 @@ The same convertToEMX.m works as a function with batchConvertToEMX.m, which is m
 
 Happy converting!
 
+The 30 Sep 2026 update: I updated the function file convertToEMX.m, so that the conversion now reports the microwave frequency at which the original spectra were measured, so now it is possible to view correct g-values when using WinEPR on *.par /*.scp spectra files.
+
 Dima Svistunenko
