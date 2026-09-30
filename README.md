@@ -14,3 +14,5 @@ The aim of this repository is simply to share codes that may be useful for other
 The repository includes several independent pieces of code. Each script or function has its own internal description and usage notes. Please refer to the readme files in each folder and to the comments at the top of each file for details.
 
 As of 18 May 2026, there are two folders: TRSSA-Y (for tyrosyl radical spectra simulation) and Xepr_to_EMX_conversion (for EPR spectra format convertion).   
+
+On 30 Sep 2026, I updated the Xepr_to_EMX_conversion function file convertToEMX.m, so that the conversion now reports the microwave frequency at which the original spectra were measured, so now it is possible to view correct g-values when using WinEPR on *.par /*.scp spectra files.
