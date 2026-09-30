@@ -21,6 +21,7 @@ function convertToEMX(dscFile, dtaFile, spcFile, parFile, scaleFactor)
 %         GST <field start>
 %         GSI <sweep width>
 %         TITL <filename>
+%         MF <microwave frequency in GHz, when MWFQ is valid>
 %
 % For batch conversion - see batchConvertToEMX.m
 
@@ -37,12 +38,14 @@ function convertToEMX(dscFile, dtaFile, spcFile, parFile, scaleFactor)
         if isempty(line) || startsWith(line,'*') || startsWith(line,'#')
             continue;
         end
-        parts = strsplit(line, char(9)); % tab-delimited
-        if numel(parts) >= 2
-            k = strtrim(parts{1});
+        % Split at the first whitespace run: DSC uses both tabs and spaces.
+        % Keep the entire value, including spaces inside quoted text.
+        parts = regexp(line, '^(\S+)\s+(.*)$', 'tokens', 'once');
+        if ~isempty(parts)
+            k = parts{1};
             v = strtrim(parts{2});
-            if startsWith(v,"'") && endsWith(v,"'")
-                v = extractBetween(v,2,strlength(v)-1);
+            if numel(v) >= 2 && v(1) == char(39) && v(end) == char(39)
+                v = v(2:end-1);
             end
             meta(k) = v;
         end
@@ -58,6 +61,24 @@ function convertToEMX(dscFile, dtaFile, spcFile, parFile, scaleFactor)
     byteOrder = 'ieee-be';
     if ~isempty(BSEQ) && ~strcmpi(BSEQ,'BIG')
         byteOrder = 'ieee-le';
+    end
+
+    % --- Microwave frequency ---
+    % DSC MWFQ is in Hz; EMX/WinEPR MF is in GHz.
+    % Convert Hz to GHz when writing MF below so WinEPR can use the
+    % correct microwave frequency for its Parameter List and g-factor tracker.
+    mwFreqHz = [];
+    if isKey(meta,'MWFQ')
+        value = str2double(meta('MWFQ'));
+        if isscalar(value) && isreal(value) && isfinite(value) && value > 0
+            mwFreqHz = value;
+        else
+            warning('convertToEMX:InvalidMWFQ', ...
+                'Invalid MWFQ in %s; MF omitted from PAR.', dscFile);
+        end
+    else
+        warning('convertToEMX:MissingMWFQ', ...
+            'No MWFQ in %s; MF omitted from PAR.', dscFile);
     end
 
     % --- Read DTA (float64) ---
@@ -90,6 +111,9 @@ function convertToEMX(dscFile, dtaFile, spcFile, parFile, scaleFactor)
         sprintf('GSI %.6e', XWID)
         sprintf('TITL %s', nm)
     };
+    if ~isempty(mwFreqHz)
+        lines{end+1} = sprintf('MF %.15g', mwFreqHz / 1e9);
+    end
     fid = fopen(parFile,'wb');                            % control \r
     assert(fid > 0, 'Cannot create PAR file: %s', parFile);
     for i = 1:numel(lines)
